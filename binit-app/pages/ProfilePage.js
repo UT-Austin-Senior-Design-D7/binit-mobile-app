@@ -2,8 +2,7 @@ import { Text, Spacer } from "@react-native-material/core";
 import { Dimensions, TouchableHighlight, StyleSheet, View, VirtualizedList } from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
 import { Divider } from "@rneui/themed";
-
-
+import { useEffect, useState } from 'react';
 
 
 const db = [
@@ -40,12 +39,21 @@ const db = [
 ]
 
 export default function ProfilePage() {
+  const [text, setText] = useState();
+  useEffect(() => {
+    fetch('https://dummyjson.com/products/1')
+    .then(res => res.json())
+    .then((result) => {
+      setText(result.description)
+    })
+  })
  
   return (
     <View style={styles.container} >
       <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
             <Text style={styles.header} variant="h3">Waste Tracker</Text>
-            <Text style={{textAlign: 'center', marginTop: 5, fontWeight: 'bold'}}>Your trash this week</Text>
+            <Text style={{textAlign: 'center', marginTop: 5, fontWeight: 'bold'}}>{text}</Text>
+            {/* <Text style={{textAlign: 'center', marginTop: 5, fontWeight: 'bold'}}>Your trash this week</Text> */}
             <TouchableHighlight style = {styles.circle} >
               <Text style={{fontSize: 30, textAlign: 'center'}}>81 unique items!</Text>
             </TouchableHighlight>
