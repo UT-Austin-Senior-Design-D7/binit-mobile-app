@@ -23,13 +23,13 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
   drawer: {
     drawerStyle: {
-      backgroundColor: "#4bb0d1",
+      backgroundColor: "#0D87C0",
     },
     drawerActiveBackgroundColor: '#fff',
     drawerLabelStyle: {
@@ -37,7 +37,19 @@ const styles = StyleSheet.create({
       fontSize: '20px',
 
     },
-    drawerType: 'slide'
+    drawerType: 'slide',
+    headerStyle: {
+      backgroundColor: '#005a96',
+      shadowRadius: 0,
+      shadowOffset: {
+        height: 0
+      }
+    },
+    headerTitleStyle: {
+      color: 'white',
+      fontFamily: 'Avenir',
+      fontWeight: 'bold'
+    }
   },
   profile: {
     drawerIcon: ({focused, size}) => (
@@ -46,7 +58,8 @@ const styles = StyleSheet.create({
                  size={size}
                  color={focused ? '#000' : '#000'}
               />
-    )
+    ),
+    headerTitle: 'Home',
   },
   queue: {
     drawerIcon: ({focused, size}) => (

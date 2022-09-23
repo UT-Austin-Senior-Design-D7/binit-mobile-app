@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View, Alert } from 'react-native';
 import styled from 'styled-components'
+import { Surface } from "@react-native-material/core";
 import TinderCard from 'react-tinder-card'
 
 const Card = styled.View`
@@ -60,7 +61,7 @@ export default function QueuePage() {
   ]
   const onSwipe = (direction) => {
     if (direction === 'left') { // prediction was wrong
-      Alert.prompt("Classification was wrong", "Enter the correct item",  (correction) => console.log(`Item was actually ${correction}`)
+      Alert.prompt("Classification was wrong", "Enter the correct bin",  (correction) => console.log(`Item was actually ${correction}`)
     )
     }
     if (direction === 'right') { // prediction was right
@@ -86,6 +87,6 @@ export default function QueuePage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#4bb0d1',
+    backgroundColor: '#005a96',
   },
 });

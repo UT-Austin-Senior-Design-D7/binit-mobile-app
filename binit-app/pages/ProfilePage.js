@@ -1,4 +1,4 @@
-import { Text, Spacer } from "@react-native-material/core";
+import { Text, Spacer, Surface } from "@react-native-material/core";
 import { Dimensions, TouchableHighlight, StyleSheet, View, VirtualizedList } from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
 import { Divider } from "@rneui/themed";
@@ -51,36 +51,40 @@ export default function ProfilePage() {
   return (
     <View style={styles.container} >
       <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
-            <Text style={styles.header} variant="h3">Waste Tracker</Text>
-            <Text style={{textAlign: 'center', marginTop: 5, fontWeight: 'bold'}}>{text}</Text>
-            {/* <Text style={{textAlign: 'center', marginTop: 5, fontWeight: 'bold'}}>Your trash this week</Text> */}
+            {/* <Text style={{textAlign: 'center', marginTop: 5, fontWeight: 'bold'}}>{text}</Text> */}
+            <Text style={styles.header}>Your trash this week</Text>
             <TouchableHighlight style = {styles.circle} >
-              <Text style={{fontSize: 30, textAlign: 'center'}}>81 unique items!</Text>
+              <Text>
+                <Text style={styles.circleText}>81 </Text>
+                <Text style={styles.circleTextSmall}>items </Text>
+              </Text>
             </TouchableHighlight>
             <Spacer/>
-            <Text variant="h5" style={styles.h5}>Trash Log</Text>
-            
-            <Divider style={{ width: "90%", marginLeft: 20, margin: 10 }} color="#000" width={1.5} orientation="horizontal"/>
 
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', }}>
+            <Text variant="h5" style={styles.h5}>Trash Log</Text>
+            <Text variant="h5" style={styles.h5Light}>this month</Text>
+          </View>
             {db.map((entry)=>
-              <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: 'space-between'}}>
-              <Text key={entry.key} style={{textAlign: 'left', marginLeft: 20,  fontSize: 20}}>
-                {entry.item}
-              </Text>
-              <Text style={{textAlign: 'right', marginRight: 20,  fontSize: 20}}>
-                tossed {entry.time}
-              </Text>
+              <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: 'center'}}>
+                <Surface elevation={7} category="medium" style={styles.surface}>
+                <Text key={entry.key} style={{alignSelf: 'flex-start', left: 20, top: 5, fontSize: 30, color: '#91d2ff', textTransform: 'capitalize'}}>
+                  {entry.item}
+                </Text>
+                <Text style={{ alignSelf: 'flex-end', right: 10, bottom: 35, fontSize: 14, color: '#28a2da',}}>
+                  tossed {entry.time}
+                </Text>
+              </Surface>
               </View>
             )}
             <Spacer/>
-            <Text variant="h5" style={styles.h5}>Monthly Totals</Text>
-            <Divider style={{ width: "90%", marginLeft: 20, margin: 10 }} color="#000" width={1.5} orientation="horizontal"/>
+            {/* <Text variant="h5" style={styles.h5}>Monthly Totals</Text>
             <Text style={styles.text}>Plastic: 24</Text>
             <Text style={styles.text}>Waste: 51</Text>
             <Text style={styles.text}>Compost: 16</Text>
             <Spacer/>
             <Spacer/>
-            <Text style={{textAlign: 'center', fontSize: 20, fontWeight: 'bold', marginTop: 20}}>Keep up the great work!</Text>
+            <Text style={{textAlign: 'center', fontSize: 20, fontWeight: 'bold', marginTop: 20}}>Keep up the great work!</Text> */}
             <Text></Text><Text></Text><Text></Text><Text></Text>
 
       </ScrollView>
@@ -92,12 +96,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexGrow: 1,
-    backgroundColor: '#4bb0d1',
+    backgroundColor: '#005a96',
     width: '100%',
     height: '100%',
     justifyContent: 'center',
-    alignContent: 'flex-end',
-    
+    alignContent: 'flex-end',    
   },
   scrollView: {
     width: '100%',
@@ -110,25 +113,50 @@ const styles = StyleSheet.create({
     textAlign: 'left', 
     marginLeft: 20,
     marginTop: 50,
+    marginBottom: 10,
+    fontSize: 20,
+    letterSpacing: 3,
     fontWeight: 'bold',
+    color: 'white',
+    fontFamily: 'Avenir',
+    textTransform: 'uppercase'
+  },
+  h5Light: {
+    textAlign: 'right',
+    alignSelf: 'flex-end',
+    marginBottom: 10, 
+    letterSpacing: 3,
+    marginTop: 50,
+    fontSize: 20,
+    marginLeft: 60, 
+    fontWeight: 'bold',
+    textTransform: 'uppercase', 
+    fontFamily: 'Avenir', 
+    color: "#28a1d8"
   },
   header: {
+    textAlign: 'center', 
+    marginTop: 5, 
     fontWeight: 'bold',
-    alignItems: 'center',
-    textAlign: 'center',
+    fontFamily: 'Avenir',
+    fontSize: 18,
+    letterSpacing: 2,
+    color: 'white',
+    textTransform: 'uppercase'
   },
   text: {
     alignItems: 'center',
     textAlign: 'center',
     fontSize: 30,
-    margin: 5
+    margin: 5,
+    color: 'white',
   },
   circle: {
     borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
     width: Dimensions.get('window').width * 0.5,
     height: Dimensions.get('window').width * 0.5,
     marginTop: 20,
-    backgroundColor:'#497ecc',
+    backgroundColor:'#0D87C0',
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
@@ -136,5 +164,26 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 20,
     shadowColor: 'black'
+  },
+  circleText: {
+    fontSize: 95, 
+    textAlign: 'center', 
+    color: 'white',
+    fontWeight: 'bold',
+    flexWrap: 'wrap',
+  },
+  circleTextSmall: {
+    fontSize: 30, 
+    textAlign: 'center', 
+    color: 'white',
+    flexWrap: 'wrap'
+  },
+  surface: {
+    width: '90%', 
+    height: 70, 
+    justifyContent: "center", 
+    alignItems: "center", 
+    backgroundColor: "#005388",
+    margin: 8
   }
 });
