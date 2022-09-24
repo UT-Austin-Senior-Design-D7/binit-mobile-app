@@ -1,8 +1,8 @@
 import { Text, Spacer, Surface } from "@react-native-material/core";
 import { Dimensions, TouchableHighlight, StyleSheet, View, VirtualizedList } from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
-import { Divider } from "@rneui/themed";
 import { useEffect, useState } from 'react';
+import VerticalBarGraph from '@chartiful/react-native-vertical-bar-graph';
 
 
 const db = [
@@ -38,6 +38,20 @@ const db = [
   }
 ]
 
+const config = {
+  hasXAxisBackgroundLines: false,
+  xAxisLabelStyle: {
+    position: 'left',
+    fontSize: 18,
+    color: '#28a1d8'
+  },
+  yAxisLabelStyle: {
+    fontSize: 16,
+    color: '#28a1d8'
+  },
+};
+
+
 export default function ProfilePage() {
   const [text, setText] = useState();
   useEffect(() => {
@@ -60,7 +74,23 @@ export default function ProfilePage() {
               </Text>
             </TouchableHighlight>
             <Spacer/>
-
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', }}>
+              <Text variant="h5" style={styles.h5}>My Piles   </Text>
+              <Text variant="h5" style={styles.h5Light}>this month</Text>
+            </View>
+            <View>
+            <VerticalBarGraph
+              data={[20, 45]}
+              labels={['This Month', 'Monthly Avg']}
+              width={375}
+              height={300}
+              barRadius={5}
+              barColor={'white'}
+              barWidthPercentage={0.15}
+              baseConfig={config}
+              style={styles.chart}
+            />
+          </View>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', }}>
             <Text variant="h5" style={styles.h5}>Trash Log</Text>
             <Text variant="h5" style={styles.h5Light}>this month</Text>
@@ -78,13 +108,6 @@ export default function ProfilePage() {
               </View>
             )}
             <Spacer/>
-            {/* <Text variant="h5" style={styles.h5}>Monthly Totals</Text>
-            <Text style={styles.text}>Plastic: 24</Text>
-            <Text style={styles.text}>Waste: 51</Text>
-            <Text style={styles.text}>Compost: 16</Text>
-            <Spacer/>
-            <Spacer/>
-            <Text style={{textAlign: 'center', fontSize: 20, fontWeight: 'bold', marginTop: 20}}>Keep up the great work!</Text> */}
             <Text></Text><Text></Text><Text></Text><Text></Text>
 
       </ScrollView>
@@ -93,6 +116,19 @@ export default function ProfilePage() {
 }
 
 const styles = StyleSheet.create({
+  chart: {
+    marginBottom: 30,
+    marginTop: 8,
+    marginLeft: 7,
+    padding: 10,
+    paddingTop: 20,
+    borderRadius: 20,
+    backgroundColor: '#005388',
+    width: 375,
+    height: 340,
+    shadowOpacity: 0.5,
+    shadowOffset: (0, 0)
+  },
   container: {
     flex: 1,
     flexGrow: 1,
