@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View, Alert } from 'react-native';
+import { Button, StyleSheet, Text, View, Alert, Image } from 'react-native';
 import styled from 'styled-components'
+import { useEffect, useState } from 'react';
+
 import { Surface } from "@react-native-material/core";
 import TinderCard from 'react-tinder-card'
 
@@ -42,21 +44,23 @@ const CardTitle = styled.Text`
     `
 
 export default function QueuePage() {
+  const [text, setText] = useState();
+
   const data = [
     {
       name: 'recycle',
       key: '456',
-      img: require('../assets/water_bottle.jpg')
+      uri: require('../assets/water_bottle.jpg')
     },
     {
       name: 'trash',
       key: 'abc',
-      img: require('../assets/mask.jpg')
+      uri: require('../assets/mask.jpg')
     },
     {
-      name: 'recycle',
+      name: text,
       key: '123',
-      img: require('../assets/wrapper.jpg')
+      uri: `https://binitdatabase.tk/download_by_name/admin_2022-10-08_214729.jpg`
     },
   ]
   const onSwipe = (direction) => {
@@ -69,13 +73,22 @@ export default function QueuePage() {
     }
   }
   
-  
+    useEffect(() => {
+    fetch('https://binitdatabase.tk/')
+    .then((response) => response.json())
+    .then((result) => {
+      setText(result.data)
+    })
+    
+  })
+ 
+
   return (
     <View style={styles.container}>
       {data.map((entry)=> 
         <TinderCard style={styles.card} key={entry.key} onSwipe={onSwipe} preventSwipe={['up', 'down']}>
           <Card>
-              <CardImage source={entry.img}/>
+              <Image source={{ uri: entry.uri }} style={{width: '100%', height: '100%', overflow: 'hidden', borderRadius: '20px'}}/>
               <CardTitle>Prediction: {entry.name}</CardTitle>
            </Card>
         </TinderCard>

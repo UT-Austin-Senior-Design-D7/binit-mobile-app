@@ -1,5 +1,5 @@
 import { Text, Spacer, Surface } from "@react-native-material/core";
-import { Dimensions, TouchableHighlight, StyleSheet, View, VirtualizedList } from 'react-native';
+import { Dimensions, TouchableHighlight, StyleSheet, View, Image } from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
 import { useEffect, useState } from 'react';
 import VerticalBarGraph from '@chartiful/react-native-vertical-bar-graph';
@@ -54,18 +54,14 @@ const config = {
 
 export default function ProfilePage() {
   const [text, setText] = useState();
-  useEffect(() => {
-    fetch('https://dummyjson.com/products/1')
-    .then(res => res.json())
-    .then((result) => {
-      setText(result.description)
-    })
-  })
- 
+  const [myimage, setImage] = useState();
+
+
   return (
     <View style={styles.container} >
       <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
-            {/* <Text style={{textAlign: 'center', marginTop: 5, fontWeight: 'bold'}}>{text}</Text> */}
+            {/* <Text style={{textAlign: 'center', marginTop: 5, fontWeight: 'bold', color: 'white'}}>{text}</Text> */}
+            {/* <Image source={{uri: ``}} style={{height: 200, width: 200}}/> */}
             <Text style={styles.header}>Your trash this week</Text>
             <TouchableHighlight style = {styles.circle} >
               <Text>
