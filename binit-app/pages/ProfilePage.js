@@ -92,7 +92,7 @@ export default function ProfilePage() {
             <Text variant="h5" style={styles.h5Light}>this month</Text>
           </View>
             {db.map((entry)=>
-              <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: 'center'}}>
+              <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: 'center'}} key={entry.key}>
                 <Surface elevation={7} category="medium" style={styles.surface}>
                 <Text key={entry.key} style={{alignSelf: 'flex-start', left: 20, top: 5, fontSize: 30, color: '#91d2ff', textTransform: 'capitalize'}}>
                   {entry.item}
@@ -122,8 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#005388',
     width: 375,
     height: 340,
-    shadowOpacity: 0.5,
-    shadowOffset: (0, 0)
+    shadowOpacity: 0.2,
   },
   container: {
     flex: 1,

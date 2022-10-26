@@ -46,6 +46,24 @@ const CardTitle = styled.Text`
 export default function QueuePage() {
   const [text, setText] = useState();
 
+  const options = [
+    {
+      text: 'Plastic',
+      onPress: () => console.log("corrected to Plastic!")
+    },
+    {
+      text: 'Trash',
+      onPress: () => console.log("corrected to Trash!")
+    },
+    {
+      text: 'Compost',
+      onPress: () => console.log("corrected to Compost!")
+    },
+    {
+      text: 'Cancel',
+      onPress: () => console.log("correction was canceled")
+    }
+  ]
   const data = [
     {
       name: 'recycle',
@@ -65,8 +83,7 @@ export default function QueuePage() {
   ]
   const onSwipe = (direction) => {
     if (direction === 'left') { // prediction was wrong
-      Alert.prompt("Classification was wrong", "Enter the correct bin",  (correction) => console.log(`Item was actually ${correction}`)
-    )
+      Alert.alert("Classification was wrong", "", options, {cancelable: true})
     }
     if (direction === 'right') { // prediction was right
       Alert.alert(title='Classification was correct!')
