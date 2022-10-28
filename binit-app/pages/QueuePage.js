@@ -15,7 +15,6 @@ const Card = styled.View`
     max-width: 300px;
     height: 500px;
     shadow-color: black;
-    shadow-opacity: 0.1;
     shadow-radius: 20px;
     border-radius: 20px;
     resize-mode: cover;

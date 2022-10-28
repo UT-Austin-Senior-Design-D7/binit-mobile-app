@@ -1,23 +1,34 @@
 import { StatusBar } from 'expo-status-bar';
-import { Image, StyleSheet, Text, View, Pressable, TextInput } from 'react-native';
+import { Alert, Image, StyleSheet, Text, View, Pressable, TextInput } from 'react-native';
 import styled from 'styled-components'
 import { useEffect, useState } from 'react';
 import { propTypes } from 'react-tinder-card';
 import * as RootNavigation from '../RootNavigation';
+import axios from 'axios';
 
-async function LoginUser(user, pass) {
-  return 'cooltoken'
+async function LoginUser(user, password) {
+  const res = await fetch(`https://binitdatabase.tk/login/${user}/${password}`)
+  .then((response) => response.json())
+  .catch(error => {console.log(error)})
+
+  return res
 }
 
 export default function LoginPage({setToken}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+
   async function handleSubmit(e) {
-    const token = LoginUser(username, password)
-    if (token) {
+    const token = await LoginUser(username, password)
+
+    if (token['data'] === 1) {
+      console.log("successfully logged in")
       setToken(token)
-      console.log("logged in with token:" + token)
+    }
+    else {
+      setToken(0)
+      Alert.alert("Incorrect login credentials. Please try again.")
     }
   }
 
@@ -38,7 +49,7 @@ export default function LoginPage({setToken}) {
         value={password}
       />
       
-      <Pressable style={styles.button} onPress={() => setToken(true)}>
+      <Pressable style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Log In</Text>
       </Pressable>
       <Pressable style={styles.button}>

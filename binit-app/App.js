@@ -13,35 +13,14 @@ import LoginPage from './pages/LoginPage';
 
 const Drawer = createDrawerNavigator();
 
-const getToken = () => {
-  try {
-    const value = AsyncStorage.getItem('@token')
-    console.log(value)
-    if (value !== null) {
-      return null
-    }
-    else {
-      console.log("no token")
-      return null
-    }
-  }
-  catch (e) {
-    console.log('error fetching token')
-  }
-}
 
 export default function App(props) {
-  const [token, setToken] = useState(false);
-  const mytoken = 'foo'
-
-  if (getToken() === null) {
-    console.log("null")
-  }
+  const [token, setToken] = useState(0);
 
   return (
 
     <NavigationContainer ref={navigationRef}>
-      {token == false ? (
+      {token === 0 ? (
         <LoginPage setToken={setToken}/>
       ): (
         <Drawer.Navigator initialRouteName="Profile" useLegacyImplementation screenOptions={styles.drawer}>
