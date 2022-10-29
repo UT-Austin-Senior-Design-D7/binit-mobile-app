@@ -16,12 +16,13 @@ const Drawer = createDrawerNavigator();
 
 export default function App(props) {
   const [token, setToken] = useState(0);
+  const [user, setUser] = useState();
 
   return (
 
     <NavigationContainer ref={navigationRef}>
       {token === 0 ? (
-        <LoginPage setToken={setToken}/>
+        <LoginPage setToken={setToken} setUser={setUser}/>
       ): (
         <Drawer.Navigator initialRouteName="Profile" useLegacyImplementation screenOptions={styles.drawer}>
           <Drawer.Screen name="Profile" component={ProfilePage} options={styles.profile}/>

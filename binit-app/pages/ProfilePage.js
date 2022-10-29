@@ -52,10 +52,48 @@ const config = {
 };
 
 
-export default function ProfilePage() {
-  const [text, setText] = useState();
-  const [myimage, setImage] = useState();
 
+export default function ProfilePage() {
+  const [weekly, setWeekly] = useState(0);
+  const [monthly, setMonthly] = useState(0);
+  const [last_month, setLastMonth] = useState(0);
+  const [waste_log, setWasteLog] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  async function getTotals(username) {
+    await fetch(`https://binitdatabase.tk/rushi/weekly_total`)
+    .then((response) => response.json())
+    .then((res) => setWeekly(res['data']))
+    .catch(error => {console.log(error)})
+  
+    await fetch(`https://binitdatabase.tk/rushi/monthly_total`)
+    .then((response) => response.json())
+    .then((res) => setMonthly(res['data']))
+    .catch(error => {console.log(error)})
+    
+    await fetch(`https://binitdatabase.tk/rushi/last_month_total`)
+    .then((response) => response.json())
+    .then((res) => setLastMonth(res['data']))
+    .catch(error => {console.log(error)})
+
+    await fetch(`https://binitdatabase.tk/rushi/waste_log_weekly`)
+    .then((response) => response.json())
+    .then((res) => setWasteLog(res['list']))
+    .catch(error => {console.log(error)})
+
+  }
+  
+
+  useEffect(() => {
+    getTotals('rushi');
+    setIsLoading(false);
+  })
+
+  if (isLoading) {
+    return (
+      <Text>Loading</Text>
+    )
+  }
 
   return (
     <View style={styles.container} >
@@ -65,7 +103,7 @@ export default function ProfilePage() {
             <Text style={styles.header}>Your trash this week</Text>
             <TouchableHighlight style = {styles.circle} >
               <Text>
-                <Text style={styles.circleText}>81 </Text>
+                <Text style={styles.circleText}>{weekly} </Text>
                 <Text style={styles.circleTextSmall}>items </Text>
               </Text>
             </TouchableHighlight>
@@ -76,8 +114,8 @@ export default function ProfilePage() {
             </View>
             <View>
             <VerticalBarGraph
-              data={[20, 45]}
-              labels={['This Month', 'Monthly Avg']}
+              data={[monthly, last_month]}
+              labels={['This Month', 'Last Month']}
               width={375}
               height={300}
               barRadius={5}
@@ -91,14 +129,14 @@ export default function ProfilePage() {
             <Text variant="h5" style={styles.h5}>Trash Log</Text>
             <Text variant="h5" style={styles.h5Light}>this month</Text>
           </View>
-            {db.map((entry)=>
+            {waste_log.map((entry)=>
               <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent: 'center'}} key={entry.key}>
                 <Surface elevation={7} category="medium" style={styles.surface}>
-                <Text key={entry.key} style={{alignSelf: 'flex-start', left: 20, top: 5, fontSize: 30, color: '#91d2ff', textTransform: 'capitalize'}}>
-                  {entry.item}
+                <Text key={entry.date} style={{alignSelf: 'flex-start', left: 20, top: 5, fontSize: 30, color: '#91d2ff', textTransform: 'capitalize'}}>
+                  {entry.type}
                 </Text>
                 <Text style={{ alignSelf: 'flex-end', right: 10, bottom: 35, fontSize: 14, color: '#28a2da',}}>
-                  tossed {entry.time}
+                  tossed {entry.date.substring(0, 12)}
                 </Text>
               </Surface>
               </View>

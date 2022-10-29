@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useEffect, useState } from 'react';
 import { propTypes } from 'react-tinder-card';
 import * as RootNavigation from '../RootNavigation';
-import axios from 'axios';
+
 
 async function LoginUser(user, password) {
   const res = await fetch(`https://binitdatabase.tk/login/${user}/${password}`)
@@ -14,7 +14,7 @@ async function LoginUser(user, password) {
   return res
 }
 
-export default function LoginPage({setToken}) {
+export default function LoginPage({setToken, setUser}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -25,6 +25,7 @@ export default function LoginPage({setToken}) {
     if (token['data'] === 1) {
       console.log("successfully logged in")
       setToken(token)
+      setUser(username)
     }
     else {
       setToken(0)

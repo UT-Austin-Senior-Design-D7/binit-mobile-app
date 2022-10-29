@@ -43,7 +43,8 @@ const CardTitle = styled.Text`
     `
 
 export default function QueuePage() {
-  const [text, setText] = useState();
+  const [text, setText] = useState('foo');
+  const [cards, setCards] = useState([]);
 
   const options = [
     {
@@ -63,23 +64,19 @@ export default function QueuePage() {
       onPress: () => console.log("correction was canceled")
     }
   ]
-  const data = [
-    {
-      name: 'recycle',
-      key: '456',
-      uri: require('../assets/water_bottle.jpg')
-    },
-    {
-      name: 'trash',
-      key: 'abc',
-      uri: require('../assets/mask.jpg')
-    },
-    {
-      name: text,
-      key: '123',
-      uri: `https://binitdatabase.tk/download_by_name/admin_2022-10-08_214729.jpg`
-    },
-  ]
+
+  function convertPrediction(prediction) {
+    switch (prediction) {
+      case 0:
+        return "Trash"
+      case 1:
+        return "Recycle"
+      case 2:
+        return "Compost"
+    }
+
+  }
+  
   const onSwipe = (direction) => {
     if (direction === 'left') { // prediction was wrong
       Alert.alert("Classification was wrong", "", options, {cancelable: true})
@@ -90,10 +87,10 @@ export default function QueuePage() {
   }
   
     useEffect(() => {
-    fetch('https://binitdatabase.tk/')
+    fetch('https://binitdatabase.tk/rushi/unclassified')
     .then((response) => response.json())
     .then((result) => {
-      setText(result.data)
+      setCards(result.list)
     })
     
   })
@@ -101,11 +98,11 @@ export default function QueuePage() {
 
   return (
     <View style={styles.container}>
-      {data.map((entry)=> 
-        <TinderCard style={styles.card} key={entry.key} onSwipe={onSwipe} preventSwipe={['up', 'down']}>
+      {cards.map((entry)=> 
+        <TinderCard style={styles.card} key={entry.id} onSwipe={onSwipe} preventSwipe={['up', 'down']}>
           <Card>
-              <Image source={{ uri: entry.uri }} style={{width: '100%', height: '100%', overflow: 'hidden', borderRadius: '20px'}}/>
-              <CardTitle>Prediction: {entry.name}</CardTitle>
+              <Image source={{ uri: `https://binitdatabase.tk/download_by_name/${entry.filename}` }} style={{width: '100%', height: '100%', overflow: 'hidden', borderRadius: '20px'}}/>
+              <CardTitle>Prediction: {convertPrediction(entry.prediction)}</CardTitle>
            </Card>
         </TinderCard>
       )}
