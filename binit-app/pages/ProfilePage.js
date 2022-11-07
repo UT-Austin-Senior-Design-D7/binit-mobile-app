@@ -53,7 +53,7 @@ const config = {
 
 
 
-export default function ProfilePage() {
+export default function ProfilePage(props) {
   const [weekly, setWeekly] = useState(0);
   const [monthly, setMonthly] = useState(0);
   const [last_month, setLastMonth] = useState(0);
@@ -61,22 +61,22 @@ export default function ProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
 
   async function getTotals(username) {
-    await fetch(`https://binitdatabase.tk/rushi/weekly_total`)
+    await fetch(`https://binitdatabase.tk/${username}/weekly_total`)
     .then((response) => response.json())
     .then((res) => setWeekly(res['data']))
     .catch(error => {console.log(error)})
   
-    await fetch(`https://binitdatabase.tk/rushi/monthly_total`)
+    await fetch(`https://binitdatabase.tk/${username}/monthly_total`)
     .then((response) => response.json())
     .then((res) => setMonthly(res['data']))
     .catch(error => {console.log(error)})
     
-    await fetch(`https://binitdatabase.tk/rushi/last_month_total`)
+    await fetch(`https://binitdatabase.tk/${username}/last_month_total`)
     .then((response) => response.json())
     .then((res) => setLastMonth(res['data']))
     .catch(error => {console.log(error)})
 
-    await fetch(`https://binitdatabase.tk/rushi/waste_log_weekly`)
+    await fetch(`https://binitdatabase.tk/${username}/waste_log_weekly`)
     .then((response) => response.json())
     .then((res) => setWasteLog(res['list']))
     .catch(error => {console.log(error)})
@@ -85,7 +85,7 @@ export default function ProfilePage() {
   
 
   useEffect(() => {
-    getTotals('rushi');
+    getTotals(props.user);
     setIsLoading(false);
   })
 
@@ -113,7 +113,7 @@ export default function ProfilePage() {
               <Text variant="h5" style={styles.h5Light}>this month</Text>
             </View>
             <View>
-            <VerticalBarGraph
+            {/* <VerticalBarGraph
               data={[monthly, last_month]}
               labels={['This Month', 'Last Month']}
               width={375}
@@ -123,7 +123,7 @@ export default function ProfilePage() {
               barWidthPercentage={0.15}
               baseConfig={config}
               style={styles.chart}
-            />
+            /> */}
           </View>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', }}>
             <Text variant="h5" style={styles.h5}>Trash Log</Text>

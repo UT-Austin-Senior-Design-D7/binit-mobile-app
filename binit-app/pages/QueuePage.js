@@ -42,7 +42,7 @@ const CardTitle = styled.Text`
     shadow-radius: 20px;
     `
 
-export default function QueuePage() {
+export default function QueuePage({user}) {
   const [text, setText] = useState('foo');
   const [cards, setCards] = useState([]);
 
@@ -86,14 +86,18 @@ export default function QueuePage() {
     }
   }
   
-    useEffect(() => {
-    fetch('https://binitdatabase.tk/rushi/unclassified')
+  async function getCards() {
+    await fetch(`https://binitdatabase.tk/${user}/unclassified`)
     .then((response) => response.json())
     .then((result) => {
-      setCards(result.list)
+      setCards(result['list'])
     })
-    
-  })
+    .catch(error => {console.log(error)})
+
+  }
+    useEffect(() => {
+      getCards()
+    })
  
 
   return (

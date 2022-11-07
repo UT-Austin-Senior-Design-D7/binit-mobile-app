@@ -16,7 +16,7 @@ const Drawer = createDrawerNavigator();
 
 export default function App(props) {
   const [token, setToken] = useState(0);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState("not rushi");
 
   return (
 
@@ -25,8 +25,8 @@ export default function App(props) {
         <LoginPage setToken={setToken} setUser={setUser}/>
       ): (
         <Drawer.Navigator initialRouteName="Profile" useLegacyImplementation screenOptions={styles.drawer}>
-          <Drawer.Screen name="Profile" component={ProfilePage} options={styles.profile}/>
-          <Drawer.Screen name="Queue" component={QueuePage} options={styles.queue}/>
+          <Drawer.Screen name="Profile" component={() => <ProfilePage user={user}/>} options={styles.profile} />
+          <Drawer.Screen name="Queue" component={() => <QueuePage user={user}/>} options={styles.queue}/>
         </Drawer.Navigator>
       )}
       

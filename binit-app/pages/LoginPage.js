@@ -1,10 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
-import { Alert, Image, StyleSheet, Text, View, Pressable, TextInput } from 'react-native';
+import { Alert, Image, StyleSheet, Text, View, Pressable, TextInput, Modal } from 'react-native';
 import styled from 'styled-components'
 import { useEffect, useState } from 'react';
 import { propTypes } from 'react-tinder-card';
 import * as RootNavigation from '../RootNavigation';
 
+
+async function RegisterUser(user, password) {
+  const res = await fetch(`https://binitdatabase.tk/login/${user}/${password}`)
+  .then((response) => response.json())
+  .catch(error => {console.log(error)})
+
+  return res
+}
 
 async function LoginUser(user, password) {
   const res = await fetch(`https://binitdatabase.tk/login/${user}/${password}`)
@@ -24,8 +32,8 @@ export default function LoginPage({setToken, setUser}) {
 
     if (token['data'] === 1) {
       console.log("successfully logged in")
-      setToken(token)
       setUser(username)
+      setToken(token)
     }
     else {
       setToken(0)
@@ -33,6 +41,21 @@ export default function LoginPage({setToken, setUser}) {
     }
   }
 
+  async function showRegisterModal() {
+    
+  }
+  async function handleRegister(e) {
+    // register will require NAME, EMAIL, PASSWORD, HOUSEHOLD SIZE, LOCATION, DEVICE ID
+    const token = await RegisterUser(username, password)
+    
+    if (token['data'] === 1) {
+      console.log("registered user successfully")
+    }
+    else {
+      Alert.alert("Invalid credentials. Please try again.")
+    }
+
+  }
   return (
     <View style={styles.container}>
         <Image source={require('../assets/binit-white.png')} style={styles.image}/>
