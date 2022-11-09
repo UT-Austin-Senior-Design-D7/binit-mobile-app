@@ -46,24 +46,13 @@ export default function QueuePage({user}) {
   const [text, setText] = useState('foo');
   const [cards, setCards] = useState([]);
 
-  const options = [
-    {
-      text: 'Plastic',
-      onPress: () => console.log("corrected to Plastic!")
-    },
-    {
-      text: 'Trash',
-      onPress: () => console.log("corrected to Trash!")
-    },
-    {
-      text: 'Compost',
-      onPress: () => console.log("corrected to Compost!")
-    },
-    {
-      text: 'Cancel',
-      onPress: () => console.log("correction was canceled")
-    }
-  ]
+  async function correctPrediction(id, correction) {
+    const res = await fetch(`https://binitdatabase.tk/classify/${id}/${correction}`)
+    .then((response) => response.json())
+    .catch(error => {console.log(error)})
+  
+    return res
+  }
 
   function convertPrediction(prediction) {
     switch (prediction) {
@@ -77,9 +66,32 @@ export default function QueuePage({user}) {
 
   }
   
-  const onSwipe = (direction) => {
+  const onSwipe = (id, direction) => {
+    console.log(id);
     if (direction === 'left') { // prediction was wrong
-      Alert.alert("Classification was wrong", "", options, {cancelable: true})
+      console.log(`set id to ${id}`)
+      Alert.alert(
+        "Classification was wrong", 
+        "", 
+        [
+          {
+            text: 'Trash',
+            onPress: () => correctPrediction(id, 0)
+          },
+          {
+            text: 'Recycle',
+            onPress: () => correctPrediction(id, 1)
+          },
+          {
+            text: 'Compost',
+            onPress: () => correctPrediction(id, 2)
+          },
+          {
+            text: 'Cancel',
+            onPress: () => console.log("correction was canceled")
+          }
+        ],
+        {cancelable: true})
     }
     if (direction === 'right') { // prediction was right
       Alert.alert(title='Classification was correct!')
@@ -103,7 +115,7 @@ export default function QueuePage({user}) {
   return (
     <View style={styles.container}>
       {cards.map((entry)=> 
-        <TinderCard style={styles.card} key={entry.id} onSwipe={onSwipe} preventSwipe={['up', 'down']}>
+        <TinderCard style={styles.card} key={entry.id} onSwipe={(direction) => onSwipe(entry.id, direction)} preventSwipe={['up', 'down']}>
           <Card>
               <Image source={{ uri: `https://binitdatabase.tk/download_by_name/${entry.filename}` }} style={{width: '100%', height: '100%', overflow: 'hidden', borderRadius: '20px'}}/>
               <CardTitle>Prediction: {convertPrediction(entry.prediction)}</CardTitle>
