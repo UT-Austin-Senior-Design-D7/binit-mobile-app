@@ -113,8 +113,8 @@ export default function ProfilePage(props) {
               <Text variant="h5" style={styles.h5Light}>this month</Text>
             </View>
             <View>
-            {/* <VerticalBarGraph
-              data={[monthly, last_month]}
+            <VerticalBarGraph
+              data={[10, 20]}
               labels={['This Month', 'Last Month']}
               width={375}
               height={300}
@@ -123,7 +123,7 @@ export default function ProfilePage(props) {
               barWidthPercentage={0.15}
               baseConfig={config}
               style={styles.chart}
-            /> */}
+            />
           </View>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', }}>
             <Text variant="h5" style={styles.h5}>Trash Log</Text>

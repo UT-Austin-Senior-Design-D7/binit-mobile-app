@@ -6,8 +6,8 @@ import { propTypes } from 'react-tinder-card';
 import * as RootNavigation from '../RootNavigation';
 
 
-async function RegisterUser(user, password) {
-  const res = await fetch(`https://binitdatabase.tk/login/${user}/${password}`)
+async function RegisterUser(user, pass, email, size, location, deviceId) {
+  const res = await fetch(`https://binitdatabase.tk/register/${user}/${pass}/${email}/${size}/${location}/${deviceId}`)
   .then((response) => response.json())
   .catch(error => {console.log(error)})
 
@@ -25,6 +25,13 @@ async function LoginUser(user, password) {
 export default function LoginPage({setToken, setUser}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [regUsername, setRegUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [regPassword, setRegPassword] = useState('');
+  const [size, setSize] = useState('');
+  const [location, setLocation] = useState('');
+  const [deviceId, setDeviceId] = useState(0);
 
 
   async function handleSubmit(e) {
@@ -42,22 +49,76 @@ export default function LoginPage({setToken, setUser}) {
   }
 
   async function showRegisterModal() {
-    
+    setModalVisible(true);
   }
+
+  async function hideRegisterModal() {
+    setModalVisible(false);
+  }
+
   async function handleRegister(e) {
     // register will require NAME, EMAIL, PASSWORD, HOUSEHOLD SIZE, LOCATION, DEVICE ID
-    const token = await RegisterUser(username, password)
+    
+    const token = await RegisterUser(regUsername, email, regPassword, size, location, deviceId)
     
     if (token['data'] === 1) {
-      console.log("registered user successfully")
+      Alert.alert("Registered! Please proceed to login.")
+      hideRegisterModal();
     }
     else {
-      Alert.alert("Invalid credentials. Please try again.")
+      Alert.alert("Something went wrong. Please try again.")
     }
 
   }
   return (
     <View style={styles.container}>
+        <Modal visible={modalVisible} transparent={true} animationType="slide">
+          <View style={styles.modalView}>
+            <Text style={styles.header}>Register</Text>
+            <Text style={styles.text}>Username</Text>
+            <TextInput
+            style={styles.input}
+            onChangeText={setRegUsername}
+            value={regUsername}
+            />
+            <Text style={styles.text}>Email</Text>
+            <TextInput
+            style={styles.input}
+            onChangeText={setEmail}
+            keyboardType={'email-address'}
+            value={email}
+            />
+            <Text style={styles.text}>Password</Text>
+            <TextInput
+            style={styles.input}
+            onChangeText={setRegPassword}
+            secureTextEntry={true}
+            value={regPassword}
+            />
+            <Text style={styles.text}>Household Size</Text>
+            <TextInput
+            style={styles.input}
+            onChangeText={setSize}
+            keyboardType={'numeric'}
+            value={size}
+            />
+            <Text style={styles.text}>Location</Text>
+            <TextInput
+            style={styles.input}
+            onChangeText={setLocation}
+            value={location}
+            />
+            <Text style={styles.text}>Device Id</Text>
+            <TextInput
+            style={styles.input}
+            onChangeText={setDeviceId}
+            value={deviceId}
+            />
+            <Pressable style={styles.button} onPress={handleRegister}>
+              <Text style={styles.buttonText}>Continue</Text>
+            </Pressable>
+          </View>
+        </Modal>
         <Image source={require('../assets/binit-white.png')} style={styles.image}/>
         <Text style={styles.header}>Login</Text>
         <Text style={styles.text}>Username</Text>
@@ -66,17 +127,19 @@ export default function LoginPage({setToken, setUser}) {
         onChangeText={setUsername}
         value={username}
       />
+
       <Text style={styles.text}>Password</Text>
       <TextInput
         style={styles.input}
         onChangeText={setPassword}
+        secureTextEntry={true}
         value={password}
       />
       
       <Pressable style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Log In</Text>
       </Pressable>
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} onPress={showRegisterModal}>
         <Text style={styles.buttonText}>Register</Text>
       </Pressable>
     </View>
@@ -144,5 +207,28 @@ const styles = StyleSheet.create({
     top: 20,
     right: 0,
     marginTop: 30
-  }
+  },
+  centeredView: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+    backgroundColor: "#005a96"
+  },
+  modalView: {
+    margin: 20,
+    padding: 1,
+    marginTop: 40,
+    backgroundColor: "#5297c4",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
 });

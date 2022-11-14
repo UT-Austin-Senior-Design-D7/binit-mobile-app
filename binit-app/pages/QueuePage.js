@@ -47,12 +47,14 @@ export default function QueuePage({user}) {
   const [cards, setCards] = useState([]);
 
   async function correctPrediction(id, correction) {
+    console.log(`sending correction ${correction}`)
     const res = await fetch(`https://binitdatabase.tk/classify/${id}/${correction}`)
     .then((response) => response.json())
     .catch(error => {console.log(error)})
   
     return res
   }
+
 
   function convertPrediction(prediction) {
     switch (prediction) {
@@ -66,7 +68,7 @@ export default function QueuePage({user}) {
 
   }
   
-  const onSwipe = (id, direction) => {
+  const onSwipe = (id, prediction, direction) => {
     console.log(id);
     if (direction === 'left') { // prediction was wrong
       console.log(`set id to ${id}`)
@@ -94,6 +96,7 @@ export default function QueuePage({user}) {
         {cancelable: true})
     }
     if (direction === 'right') { // prediction was right
+      correctPrediction(id, prediction)
       Alert.alert(title='Classification was correct!')
     }
   }
@@ -115,7 +118,7 @@ export default function QueuePage({user}) {
   return (
     <View style={styles.container}>
       {cards.map((entry)=> 
-        <TinderCard style={styles.card} key={entry.id} onSwipe={(direction) => onSwipe(entry.id, direction)} preventSwipe={['up', 'down']}>
+        <TinderCard style={styles.card} key={entry.id} onSwipe={(direction) => onSwipe(entry.id, entry.prediction, direction)} preventSwipe={['up', 'down']}>
           <Card>
               <Image source={{ uri: `https://binitdatabase.tk/download_by_name/${entry.filename}` }} style={{width: '100%', height: '100%', overflow: 'hidden', borderRadius: '20px'}}/>
               <CardTitle>Prediction: {convertPrediction(entry.prediction)}</CardTitle>
